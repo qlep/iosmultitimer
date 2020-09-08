@@ -9,21 +9,23 @@
 /* Begin PBXBuildFile section */
 		F7807E9A25079F21003E64E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7807E9925079F21003E64E0 /* AppDelegate.swift */; };
 		F7807E9C25079F21003E64E0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7807E9B25079F21003E64E0 /* SceneDelegate.swift */; };
-		F7807E9E25079F21003E64E0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7807E9D25079F21003E64E0 /* ViewController.swift */; };
+		F7807E9E25079F21003E64E0 /* TimerListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7807E9D25079F21003E64E0 /* TimerListTableViewController.swift */; };
 		F7807EA125079F21003E64E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7807E9F25079F21003E64E0 /* Main.storyboard */; };
 		F7807EA325079F23003E64E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7807EA225079F23003E64E0 /* Assets.xcassets */; };
 		F7807EA625079F23003E64E0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7807EA425079F23003E64E0 /* LaunchScreen.storyboard */; };
+		F7807EAE2507A6E4003E64E0 /* MyTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7807EAD2507A6E4003E64E0 /* MyTimer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		F7807E9625079F21003E64E0 /* MultiTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7807E9925079F21003E64E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F7807E9B25079F21003E64E0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		F7807E9D25079F21003E64E0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F7807E9D25079F21003E64E0 /* TimerListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerListTableViewController.swift; sourceTree = "<group>"; };
 		F7807EA025079F21003E64E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F7807EA225079F23003E64E0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F7807EA525079F23003E64E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F7807EA725079F23003E64E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F7807EAD2507A6E4003E64E0 /* MyTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTimer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,7 +60,8 @@
 			children = (
 				F7807E9925079F21003E64E0 /* AppDelegate.swift */,
 				F7807E9B25079F21003E64E0 /* SceneDelegate.swift */,
-				F7807E9D25079F21003E64E0 /* ViewController.swift */,
+				F7807E9D25079F21003E64E0 /* TimerListTableViewController.swift */,
+				F7807EAD2507A6E4003E64E0 /* MyTimer.swift */,
 				F7807E9F25079F21003E64E0 /* Main.storyboard */,
 				F7807EA225079F23003E64E0 /* Assets.xcassets */,
 				F7807EA425079F23003E64E0 /* LaunchScreen.storyboard */,
@@ -138,9 +141,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F7807E9E25079F21003E64E0 /* ViewController.swift in Sources */,
+				F7807E9E25079F21003E64E0 /* TimerListTableViewController.swift in Sources */,
 				F7807E9A25079F21003E64E0 /* AppDelegate.swift in Sources */,
 				F7807E9C25079F21003E64E0 /* SceneDelegate.swift in Sources */,
+				F7807EAE2507A6E4003E64E0 /* MyTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
