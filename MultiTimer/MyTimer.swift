@@ -24,4 +24,11 @@ class MyTimer {
         
         self.runTime = self.seconds + self.minutes * 60
     }
+    
+    func showTime() -> String {
+        self.minutes = self.runTime / 60
+        self.seconds = self.runTime - self.minutes * 60
+        
+        return (self.minutes < 10 ? "0" : "") + String( self.minutes) + ":" + (self.seconds < 10 ? "0" : "") + String(self.seconds)
+    }
 }

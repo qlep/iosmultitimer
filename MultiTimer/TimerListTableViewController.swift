@@ -10,8 +10,7 @@ import UIKit
 class TimerListTableViewController: UITableViewController {
     // MARK: - Properties
     var timers: [MyTimer] = []
-    var ticker = Timer()
-    var isRunning = false
+    var ticker: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,8 +45,9 @@ class TimerListTableViewController: UITableViewController {
         
         let timer = timers[indexPath.row]
         
-        cell.textLabel?.text = timer.title
-        cell.detailTextLabel?.text = (timer.minutes < 10 ? "0" : "") + String(timer.minutes) + ":" + (timer.seconds < 10 ? "0" : "") + String(timer.seconds)
+        if let cell = cell as? TimerTableViewCell {
+            cell.timer = timer
+        }
         
         return cell
     }
@@ -56,54 +56,47 @@ class TimerListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // deselect row after tap
         tableView.deselectRow(at: indexPath, animated: true)
+        timers[indexPath.row].isRunning.toggle()
+        startTimer()
         
-        // selected timer from timers array
-        let timer = timers[indexPath.row]
-        
-        // check if timer is already running
-        if timer.isRunning {
-            ticker.invalidate()
-            timer.isRunning = false
-            print("\(timer.title) is running: \(timer.isRunning)")
-        } else {
-            // in case timer is not running
-            let context = ["timerNumber": indexPath.row]
-            timer.isRunning = true
-            print("\(timer.title) is running: \(timer.isRunning)")
-            ticker = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(countDown), userInfo: context, repeats: true)
-        }
     }
     
     // MARK: - Timer Methods
-    // method to be called by ticker every second of countdown
-    @objc func countDown(countDownTimer: Timer) {
-        var mins = 0
-        var secs = 0
-        
-        // context dictionary passed in Timer userInfo
-        guard let context = countDownTimer.userInfo as? [String:Int] else { return }
-        if let selectedRow = context["timerNumber"] {
-            let timer = timers[selectedRow]
-            mins = timer.runTime / 60
-            secs = timer.runTime - mins * 60
-            
-            let cell = tableView.cellForRow(at: IndexPath(row: selectedRow, section: 0 ))
-            
-            cell?.detailTextLabel?.text = (mins < 10 ? "0" : "") + String(mins) + ":" + (secs < 10 ? "0" : "") + String(secs)
-            
-            timer.runTime -= 1
-            print("\(timer.runTime)")
-            
-            
-            if timer.runTime == 0 {
-                stopTimer(countDownTimer)
-                timer.isRunning = false
-            }
+    func startTimer() {
+        if ticker == nil {
+            ticker = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+        } else {
+            print("*** already running")
         }
     }
     
-    func stopTimer(_ countDownTimer: Timer) {
-        countDownTimer.invalidate()
+    // method to be called by ticker every second of countdown
+    @objc func updateTimer() {
+        for timer in timers {
+            if timer.isRunning {
+                if let timerIndex = timers.firstIndex(where: {$0 === timer}) {
+                    let indexPath = IndexPath(row: timerIndex, section: 0)
+                    let cell = tableView.cellForRow(at: indexPath) as! TimerTableViewCell
+                    cell.updateTime()
+                    print("*** updating \(timer.title)")
+                }
+            }
+        }
+        
+        let runningTimers = timers.filter{$0.isRunning}
+        
+        if runningTimers.count == 0 {
+            stopTimer()
+        }
+    }
+    
+    func stopTimer() {
+        if ticker != nil {
+            ticker?.invalidate()
+            ticker = nil
+            print("*** Ticker invalidated")
+        }
+    
     }
 }
 
