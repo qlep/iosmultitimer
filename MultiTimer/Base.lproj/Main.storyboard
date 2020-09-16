@@ -3,6 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,7 +14,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="EJJ-hi-oeR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TimerCell" rowHeight="65" id="cTc-31-vSa" customClass="TimerTableViewCell" customModule="MultiTimer" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="65"/>
@@ -23,18 +24,21 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Titile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hKO-b4-Qcw" userLabel="Titile Label">
-                                            <rect key="frame" x="15" y="0.0" width="246.5" height="65"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                            <rect key="frame" x="15" y="0.0" width="249.5" height="65"/>
+                                            <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="25"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZ6-eW-MzV" userLabel="Time Label">
-                                            <rect key="frame" x="266.5" y="11" width="82.5" height="43"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                            <rect key="frame" x="269.5" y="11" width="79.5" height="43"/>
+                                            <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstItem="hKO-b4-Qcw" firstAttribute="top" secondItem="Ob0-EZ-LWf" secondAttribute="top" id="9NP-YS-FWJ"/>
                                         <constraint firstItem="hKO-b4-Qcw" firstAttribute="leading" secondItem="Ob0-EZ-LWf" secondAttribute="leading" constant="15" id="Jey-pI-B08"/>
@@ -45,6 +49,7 @@
                                         <constraint firstAttribute="trailingMargin" secondItem="OZ6-eW-MzV" secondAttribute="trailing" constant="10" id="vLy-PI-hYA"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <outlet property="timeLabel" destination="OZ6-eW-MzV" id="h7v-O4-dl6"/>
                                     <outlet property="titleLabel" destination="hKO-b4-Qcw" id="LCL-Ns-pEc"/>
@@ -56,11 +61,101 @@
                             <outlet property="delegate" destination="GGK-ZF-HEh" id="gMA-QY-dsA"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="My Timers" id="79S-Zc-lAc"/>
+                    <navigationItem key="navigationItem" title="My Timers" id="79S-Zc-lAc">
+                        <barButtonItem key="leftBarButtonItem" title="New Timer" image="plus" catalog="system" id="dCt-pV-4Wv">
+                            <connections>
+                                <segue destination="lsx-PG-vLh" kind="popoverPresentation" popoverAnchorBarButtonItem="dCt-pV-4Wv" id="w4I-oW-1eE">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="86O-fx-jLt">
+                            <connections>
+                                <action selector="editTimers" destination="GGK-ZF-HEh" id="VOv-dX-5Nc"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="editButton" destination="86O-fx-jLt" id="rLk-yW-5IC"/>
+                        <outlet property="newTimerButton" destination="dCt-pV-4Wv" id="GAh-kv-pw1"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kxn-4H-ePg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1549.5999999999999" y="115.59220389805098"/>
+        </scene>
+        <!--New Timer View Controller-->
+        <scene sceneID="udh-Qp-GUh">
+            <objects>
+                <viewController id="lsx-PG-vLh" customClass="NewTimerViewController" customModule="MultiTimer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QRR-rQ-zSQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Der Neu Timer Title" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GDn-Kd-lr7">
+                                <rect key="frame" x="15" y="96" width="345" height="39.5"/>
+                                <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="25"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Usy-fD-ac4">
+                                <rect key="frame" x="0.0" y="165.5" width="375" height="216"/>
+                                <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="lsx-PG-vLh" id="024-qL-9Qm"/>
+                                    <outlet property="delegate" destination="lsx-PG-vLh" id="kHd-03-tVr"/>
+                                </connections>
+                            </pickerView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9jg-Lv-HRr">
+                                <rect key="frame" x="157.5" y="411.5" width="60" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="START">
+                                    <color key="titleColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" systemColor="systemGray2Color" red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="NXY-AQ-oSv" kind="unwind" unwindAction="userDidStartNewTimer:" id="cFj-MF-Zn7"/>
+                                </connections>
+                            </button>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yeh-UN-w04">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                <items>
+                                    <navigationItem title="New Timer" id="uom-Wm-B0q"/>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="GDn-Kd-lr7" firstAttribute="top" secondItem="yeh-UN-w04" secondAttribute="bottom" constant="40" id="1So-hy-ETo"/>
+                            <constraint firstItem="yeh-UN-w04" firstAttribute="leading" secondItem="F7j-JK-ava" secondAttribute="leading" id="1kT-md-o4d"/>
+                            <constraint firstItem="GDn-Kd-lr7" firstAttribute="leading" secondItem="F7j-JK-ava" secondAttribute="leading" constant="15" id="GKr-0Y-CKc"/>
+                            <constraint firstItem="GDn-Kd-lr7" firstAttribute="centerX" secondItem="QRR-rQ-zSQ" secondAttribute="centerX" id="HLp-9F-Bky"/>
+                            <constraint firstItem="Usy-fD-ac4" firstAttribute="centerX" secondItem="GDn-Kd-lr7" secondAttribute="centerX" id="RVF-kU-ieW"/>
+                            <constraint firstItem="9jg-Lv-HRr" firstAttribute="centerX" secondItem="QRR-rQ-zSQ" secondAttribute="centerX" id="UeD-tW-oOm"/>
+                            <constraint firstItem="yeh-UN-w04" firstAttribute="top" secondItem="F7j-JK-ava" secondAttribute="top" id="VtB-e8-yP4"/>
+                            <constraint firstItem="yeh-UN-w04" firstAttribute="trailing" secondItem="F7j-JK-ava" secondAttribute="trailing" id="lyW-Sg-wBq"/>
+                            <constraint firstItem="9jg-Lv-HRr" firstAttribute="top" secondItem="Usy-fD-ac4" secondAttribute="bottom" constant="30" id="nUT-0F-yke"/>
+                            <constraint firstItem="Usy-fD-ac4" firstAttribute="top" secondItem="GDn-Kd-lr7" secondAttribute="bottom" constant="30" id="rmL-8q-ula"/>
+                            <constraint firstItem="Usy-fD-ac4" firstAttribute="leading" secondItem="F7j-JK-ava" secondAttribute="leading" id="z0j-dK-ceK"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="F7j-JK-ava"/>
+                    </view>
+                    <connections>
+                        <outlet property="pickerView" destination="Usy-fD-ac4" id="Gk7-UY-hw1"/>
+                        <outlet property="startButton" destination="9jg-Lv-HRr" id="FzO-eP-qEp"/>
+                        <outlet property="titleTextField" destination="GDn-Kd-lr7" id="tyI-su-uVG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="89a-3d-jaw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="NXY-AQ-oSv" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="2274" y="116"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="aDi-vG-5tk">
@@ -81,4 +176,7 @@
             <point key="canvasLocation" x="823.20000000000005" y="115.59220389805098"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="plus" catalog="system" width="128" height="113"/>
+    </resources>
 </document>

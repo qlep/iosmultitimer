@@ -8,27 +8,23 @@
 
 import Foundation
 
-class MyTimer {
+class MyTimer: Codable {
     // MARK: - Properties
-    var title = "new timer"
+    var title: String
     var seconds: Int
     var minutes: Int
+    var hours: Int
     var runTime: Int
     var isRunning = false
     
     // MARK: - Initialization
-    init (title: String, minutes: Int, seconds: Int) {
+    init (title: String, hours: Int, minutes: Int, seconds: Int) {
         self.title = title
+        self.hours = hours
         self.minutes = minutes
         self.seconds = seconds
         
-        self.runTime = self.seconds + self.minutes * 60
-    }
-    
-    func showTime() -> String {
-        self.minutes = self.runTime / 60
-        self.seconds = self.runTime - self.minutes * 60
-        
-        return (self.minutes < 10 ? "0" : "") + String( self.minutes) + ":" + (self.seconds < 10 ? "0" : "") + String(self.seconds)
+        // total running time in seconds
+        self.runTime = self.seconds + self.minutes * 60 + self.hours * 3600
     }
 }
