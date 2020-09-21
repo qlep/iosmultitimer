@@ -10,36 +10,35 @@ import UIKit
 
 class TimerTableViewCell: UITableViewCell {
     
-    var initialTime = 0
-    
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     
     var timer: MyTimer? {
         didSet {
             titleLabel.text = timer!.title
+            statusLabel.text = "Stopped"
             timeLabel.text = displayTime(of: timer!)
-            initialTime = timer!.runTime
         }
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super .setSelected(selected, animated: animated)
-        self.accessoryType = selected ? .checkmark : .none
     }
     
     func updateTime() {
         if let timer = timer {
             if timer.runTime != 0 {
                 timer.runTime -= 1
-                
+                statusLabel.text = ""
             } else {
                 timer.isRunning = false
-                timer.runTime = initialTime
+                timer.runTime = timer.initialTime
+                statusLabel.text = "Stopped"
             }
             
             timeLabel.text = displayTime(of: timer)
         }
+    }
+    
+    func setPause() {
+        statusLabel.text = "Paused"
     }
     
     // return formatted time string

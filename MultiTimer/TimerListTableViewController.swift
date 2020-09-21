@@ -18,6 +18,7 @@ class TimerListTableViewController: UITableViewController {
     // when user taps start button in NewTimerViewController
     @IBAction func userDidStartNewTimer(_ segue: UIStoryboardSegue) {
         tableView.reloadData()
+        saveTimers()
         startTimer()
     }
     
@@ -25,7 +26,7 @@ class TimerListTableViewController: UITableViewController {
         isEditing.toggle()
         
         if isEditing {
-            editButton.title = "Delete"
+            editButton.title = "Done"
         } else {
             editButton.title = "Edit"
         }
@@ -33,8 +34,6 @@ class TimerListTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.allowsMultipleSelection = true
-        tableView.allowsMultipleSelectionDuringEditing = true
         
         loadTimers()
     }
@@ -80,7 +79,6 @@ class TimerListTableViewController: UITableViewController {
                 print("Error decoding timers from data: \(error.localizedDescription)")
             }
         }
-        
     }
     
     // MARK: - TableView data source
@@ -120,19 +118,47 @@ class TimerListTableViewController: UITableViewController {
     // MARK: - TableViewDelegate
     // when rows tapped
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if !isEditing {
-            // deselect row after tap
-            tableView.deselectRow(at: indexPath, animated: true)
-            // toggle timer state
-            timers[indexPath.row].isRunning.toggle()
-            startTimer()
-        }
+        // deselect row after tap
+        tableView.deselectRow(at: indexPath, animated: true)
+        // toggle timer state
+        timers[indexPath.row].isRunning.toggle()
+        saveTimers()
+        startTimer()
+    }
+    
+    // swiping on cell to the right action
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let timer = self.timers[indexPath.row]
         
-        if isEditing {
-            timers.remove(at: indexPath.row)
-            let indexPaths = [indexPath]
-            tableView.deleteRows(at: indexPaths, with: .automatic)
-        }
+        // to reset timer
+        let resetAction = UIContextualAction(style: .normal, title: "Reset", handler: {(ac: UIContextualAction, view: UIView, success: (Bool)-> Void) in
+            
+            let cell = tableView.cellForRow(at: indexPath) as! TimerTableViewCell
+            
+            timer.runTime = timer.initialTime
+            cell.timeLabel.text = cell.displayTime(of: timer)
+            
+            success(true)
+        })
+        
+        // to edit timer
+        let editAction = UIContextualAction(style: .normal, title: "Edit", handler: {(ac: UIContextualAction, view: UIView, success: (Bool)-> Void) in
+            
+            // this is how view controller is instantiated
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let controller = storyboard.instantiateViewController(withIdentifier: "NewTimer") as! NewTimerViewController
+            
+            controller.timer = timer
+            
+            self.present(controller, animated: true)
+            
+            success(true)
+        })
+
+        resetAction.backgroundColor = .systemPurple
+        editAction.backgroundColor = .systemBlue
+
+        return UISwipeActionsConfiguration(actions: [resetAction, editAction])
     }
     
     // MARK: - Timer Methods
@@ -145,17 +171,22 @@ class TimerListTableViewController: UITableViewController {
     // method to be called by ticker every second of countdown
     @objc func updateTimers() {
         for timer in timers {
-            if timer.isRunning {
-                // get index of running timer
-                if let timerIndex = timers.firstIndex(where: {$0 === timer}) {
-                    // create IndexPath from index of running timer
-                    let indexPath = IndexPath(row: timerIndex, section: 0)
-                    // start updating cell at index of running timer
-                    let cell = tableView.cellForRow(at: indexPath) as! TimerTableViewCell
+            // get index of running timer
+            if let timerIndex = timers.firstIndex(where: {$0 === timer}) {
+                // create IndexPath from index of running timer
+                let indexPath = IndexPath(row: timerIndex, section: 0)
+                // start updating cell at index of running timer
+                let cell = tableView.cellForRow(at: indexPath) as! TimerTableViewCell
+                
+                if timer.isRunning {
                     cell.updateTime()
+                } else if timer.runTime != timer.initialTime {
+                    // when timer paused
+                    cell.setPause()
                 }
             }
         }
+        
         // array of running timers, trailing closure
         let runningTimers = timers.filter{$0.isRunning}
         // invalidate ticker if no timers running

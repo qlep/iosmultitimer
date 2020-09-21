@@ -21,10 +21,13 @@ class NewTimerViewController: UIViewController {
     var selectedSeconds: Int = 0
     var titleString = ""
     
+    var timer: MyTimer?
+    
     // MARK: - Outlets
     @IBOutlet weak var pickerView: UIPickerView!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var startButton: UIButton!
+    @IBOutlet weak var navigationBar: UINavigationItem!
     
     @IBAction func startTimer() {
         self.dismiss(animated: true, completion: nil)
@@ -33,27 +36,50 @@ class NewTimerViewController: UIViewController {
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         
         pickerView.delegate = self
-        pickerView.selectRow(1, inComponent: 1, animated: true)
+        pickerView.selectRow(1, inComponent: 2, animated: true)
         
         selectedMinutes = 1
         
         titleTextField.delegate = self
         titleTextField.becomeFirstResponder()
+        
         startButton.isEnabled = false
+        
+        // Set views if editing an exisiting timer
+        if let timer = timer {
+            navigationBar.title = "Edit timer"
+            titleTextField.text = timer.title
+            titleTextField.isEnabled = false
+            startButton.isEnabled = true
+            startButton.titleLabel?.text = "Done"
+            
+            pickerView.selectRow(timer.hours, inComponent: 0, animated: true)
+            pickerView.selectRow(timer.minutes, inComponent: 1, animated: true)
+            pickerView.selectRow(timer.seconds, inComponent: 2, animated: true)
+            selectedHours = timer.hours
+            selectedMinutes = timer.minutes
+            selectedSeconds = timer.seconds
+        }
     }
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let controller = segue.destination as! TimerListTableViewController
-        let timer = MyTimer(title: titleString, hours: selectedHours, minutes: selectedMinutes, seconds: selectedSeconds)
-        controller.timers.append(timer)
-        controller.saveTimers()
-        timer.isRunning = true
-        
+        if var editedTimer = timer {
+            editedTimer = MyTimer(title: titleTextField.text!, hours: selectedHours, minutes: selectedMinutes, seconds: selectedSeconds)
+            
+            if let timerIndex = controller.timers.firstIndex(where: {$0.title as AnyObject === editedTimer.title as AnyObject}) {
+                controller.timers.remove(at: timerIndex)
+                controller.timers.insert(editedTimer, at: timerIndex)
+            }
+        } else {
+            let newTimer = MyTimer(title: titleString, hours: selectedHours, minutes: selectedMinutes, seconds: selectedSeconds)
+            controller.timers.append(newTimer)
+            controller.saveTimers()
+            newTimer.isRunning = true
+        }
     }
 }
 
