@@ -22,6 +22,7 @@ class NewTimerViewController: UIViewController {
     var titleString = ""
     
     var timer: MyTimer?
+    var index: Int!
     
     // MARK: - Outlets
     @IBOutlet weak var pickerView: UIPickerView!
@@ -51,9 +52,8 @@ class NewTimerViewController: UIViewController {
         if let timer = timer {
             navigationBar.title = "Edit timer"
             titleTextField.text = timer.title
-            titleTextField.isEnabled = false
             startButton.isEnabled = true
-            startButton.titleLabel?.text = "Done"
+            startButton.titleLabel!.text = "Done"
             
             pickerView.selectRow(timer.hours, inComponent: 0, animated: true)
             pickerView.selectRow(timer.minutes, inComponent: 1, animated: true)
@@ -69,16 +69,13 @@ class NewTimerViewController: UIViewController {
         let controller = segue.destination as! TimerListTableViewController
         if var editedTimer = timer {
             editedTimer = MyTimer(title: titleTextField.text!, hours: selectedHours, minutes: selectedMinutes, seconds: selectedSeconds)
+            controller.timer = editedTimer
+            controller.index = index
             
-            if let timerIndex = controller.timers.firstIndex(where: {$0.title as AnyObject === editedTimer.title as AnyObject}) {
-                controller.timers.remove(at: timerIndex)
-                controller.timers.insert(editedTimer, at: timerIndex)
-            }
         } else {
             let newTimer = MyTimer(title: titleString, hours: selectedHours, minutes: selectedMinutes, seconds: selectedSeconds)
-            controller.timers.append(newTimer)
-            controller.saveTimers()
-            newTimer.isRunning = true
+            controller.timer = newTimer
+            controller.index = -1
         }
     }
 }

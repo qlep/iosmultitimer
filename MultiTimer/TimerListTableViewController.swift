@@ -11,15 +11,28 @@ class TimerListTableViewController: UITableViewController {
     // MARK: - Properties
     var timers: [MyTimer] = []
     var ticker: Timer?
+    var timer: MyTimer?
+    var index: Int = -1
     
     @IBOutlet weak var newTimerButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
     
     // when user taps start button in NewTimerViewController
     @IBAction func userDidStartNewTimer(_ segue: UIStoryboardSegue) {
-        tableView.reloadData()
-        saveTimers()
-        startTimer()
+        
+        if let timer = timer {
+            if index >= 0 {
+                timers.remove(at: index)
+                timers.insert(timer, at: index)
+            } else {
+                timers.append(timer)
+            }
+            
+            timer.isRunning = true
+            tableView.reloadData()
+            saveTimers()
+            startTimer()
+        }
     }
     
     @IBAction func editTimers() {
@@ -110,7 +123,7 @@ class TimerListTableViewController: UITableViewController {
         
         timers.remove(at: indexPath.row)
         let indexPaths = [indexPath]
-        tableView.deleteRows(at: indexPaths, with: .automatic)
+        tableView.deleteRows(at: indexPaths, with: .fade)
         
         saveTimers()
     }
@@ -126,6 +139,7 @@ class TimerListTableViewController: UITableViewController {
         startTimer()
     }
     
+    // MARK: - Swipe actions
     // swiping on cell to the right action
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let timer = self.timers[indexPath.row]
@@ -147,8 +161,10 @@ class TimerListTableViewController: UITableViewController {
             // this is how view controller is instantiated
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let controller = storyboard.instantiateViewController(withIdentifier: "NewTimer") as! NewTimerViewController
+            let timerIndex = indexPath.row
             
             controller.timer = timer
+            controller.index = timerIndex
             
             self.present(controller, animated: true)
             
