@@ -18,7 +18,7 @@ class NewTimerViewController: UIViewController {
     
     var selectedHours: Int = 0
     var selectedMinutes: Int = 0
-    var selectedSeconds: Int = 0
+    var selectedSeconds: Int = 1
     var titleString = ""
     
     var timer: MyTimer?
@@ -40,8 +40,6 @@ class NewTimerViewController: UIViewController {
         
         pickerView.delegate = self
         pickerView.selectRow(1, inComponent: 2, animated: true)
-        
-        selectedMinutes = 1
         
         titleTextField.delegate = self
         titleTextField.becomeFirstResponder()

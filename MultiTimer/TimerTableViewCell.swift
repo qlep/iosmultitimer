@@ -17,8 +17,8 @@ class TimerTableViewCell: UITableViewCell {
     var timer: MyTimer? {
         didSet {
             titleLabel.text = timer!.title
-            statusLabel.text = "Stopped"
             timeLabel.text = displayTime(of: timer!)
+            statusLabel.text = "Tap to start/pause"
         }
     }
     
@@ -30,7 +30,7 @@ class TimerTableViewCell: UITableViewCell {
             } else {
                 timer.isRunning = false
                 timer.runTime = timer.initialTime
-                statusLabel.text = "Stopped"
+                statusLabel.text = "Done"
             }
             
             timeLabel.text = displayTime(of: timer)
