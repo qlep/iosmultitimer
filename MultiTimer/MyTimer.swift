@@ -16,6 +16,7 @@ class MyTimer: Codable {
     var hours: Int
     let initialTime: Int
     var runTime: Int
+    var targetDate: Date
     var isRunning = false
     
     // MARK: - Initialization
@@ -28,5 +29,7 @@ class MyTimer: Codable {
         // total running time in seconds
         self.initialTime = self.seconds + self.minutes * 60 + self.hours * 3600
         self.runTime = self.initialTime
+        
+        self.targetDate = Date(timeIntervalSinceNow: Double(self.runTime))
     }
 }

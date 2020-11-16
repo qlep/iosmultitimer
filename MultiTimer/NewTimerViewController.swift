@@ -72,7 +72,8 @@ class NewTimerViewController: UIViewController {
             
         } else {
             let newTimer = MyTimer(title: titleString, hours: selectedHours, minutes: selectedMinutes, seconds: selectedSeconds)
-            controller.timer = newTimer
+            
+            controller.timer = newTimer            
             controller.index = -1
         }
     }
@@ -105,6 +106,7 @@ extension NewTimerViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         }
     }
     
+    // UIPickerView data source
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (component == 0) {
             selectedHours = hrs[row]

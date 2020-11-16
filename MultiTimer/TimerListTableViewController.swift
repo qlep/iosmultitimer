@@ -7,12 +7,16 @@
 //
 
 import UIKit
+import UserNotifications
+
 class TimerListTableViewController: UITableViewController {
     // MARK: - Properties
     var timers: [MyTimer] = []
     var ticker: Timer?
     var timer: MyTimer?
     var index: Int = -1
+    
+    let notificationCenter = UNUserNotificationCenter.current()
     
     @IBOutlet weak var newTimerButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
@@ -35,6 +39,14 @@ class TimerListTableViewController: UITableViewController {
                 timers.remove(at: index)
                 timers.insert(timer, at: index)
             } else {
+                
+                // to pause or not to pause
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                    timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
+//                }
+                
+                timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
+                
                 timers.append(timer)
             }
             
@@ -49,6 +61,40 @@ class TimerListTableViewController: UITableViewController {
         super.viewDidLoad()
         
         loadTimers()
+        checkNotificationSettings()
+        
+    }
+    
+    // MARK: - Helper Methods
+    func checkNotificationSettings() {
+        // check if settings are allowed and act accordingly
+        notificationCenter.getNotificationSettings {
+            settings in
+            if settings.authorizationStatus != .authorized {
+                // alert to allow settings
+                DispatchQueue.main.async {
+                    self.enableNotificationsAlert()
+                }
+            }
+        }
+    }
+    
+    func enableNotificationsAlert() {
+        let alert = UIAlertController(title: "Enable notifications", message: "Please enable notifications in settings to be notified when your timer is done.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        
+        alert.addAction(okAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func scheduleNotification(notificationType: String) {
+        let content = UNMutableNotificationContent()
+        
+        content.title = notificationType
+        content.body = "Timer is done"
+        content.sound = UNNotificationSound.default
+        content.badge = 1
     }
     
     // MARK: - Timer Methods
@@ -79,6 +125,7 @@ class TimerListTableViewController: UITableViewController {
         
         // array of running timers, trailing closure
         let runningTimers = timers.filter{$0.isRunning}
+        
         // invalidate ticker if no timers running
         if runningTimers.count == 0 {
             stopTimer()
@@ -114,14 +161,14 @@ class TimerListTableViewController: UITableViewController {
             cell.timer = timer
             
             if timer.runTime != timer.initialTime {
-                cell.statusLabel.text = "Paused"
+                cell.setPause()
             }
         }
         
         return cell
     }
     
-    // swipe cell delete
+    // swipe cell to delete
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         timers.remove(at: indexPath.row)
@@ -141,12 +188,16 @@ class TimerListTableViewController: UITableViewController {
     }
     
     // MARK: - TableViewDelegate
-    // when rows tapped
+    // when row is tapped
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let timer = timers[indexPath.row]
         // deselect row after tap
         tableView.deselectRow(at: indexPath, animated: true)
+        
         // toggle timer state
-        timers[indexPath.row].isRunning.toggle()
+        timer.isRunning.toggle()
+        timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
+        
         saveTimers()
         startTimer()
     }
@@ -162,6 +213,7 @@ class TimerListTableViewController: UITableViewController {
             let cell = tableView.cellForRow(at: indexPath) as! TimerTableViewCell
             
             timer.runTime = timer.initialTime
+            timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
             cell.timeLabel.text = cell.displayTime(of: timer)
             cell.statusLabel.text = ""
             
@@ -234,6 +286,10 @@ extension TimerListTableViewController {
             } catch {
                 print("Error decoding timers from data: \(error.localizedDescription)")
             }
+        }
+        
+        for timer in timers {
+            timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
         }
     }
 }

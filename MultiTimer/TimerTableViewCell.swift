@@ -23,13 +23,16 @@ class TimerTableViewCell: UITableViewCell {
     }
     
     func updateTime() {
+        let now = Date()
         if let timer = timer {
-            if timer.runTime != 0 {
-                timer.runTime -= 1
+            let diffTimeInterval = Int(timer.targetDate.timeIntervalSinceReferenceDate - now.timeIntervalSinceReferenceDate)
+            if diffTimeInterval >= 0 {
                 statusLabel.text = ""
             } else {
                 timer.isRunning = false
                 timer.runTime = timer.initialTime
+                timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime ))
+                
                 statusLabel.text = "Done"
             }
             
@@ -44,9 +47,17 @@ class TimerTableViewCell: UITableViewCell {
     // return formatted time string
     func displayTime(of timer: MyTimer) -> String {
         let timer = timer
-        let hours = timer.runTime / 3600
-        let minutes = (timer.runTime / 60) % 60
-        let seconds = timer.runTime % 60
+        
+        let target = timer.targetDate + 1.0
+        let now = Date()
+        let diffTimeInterval = Int(target.timeIntervalSinceReferenceDate - now.timeIntervalSinceReferenceDate)
+        
+        
+        let hours = diffTimeInterval / 3600
+        let minutes = (diffTimeInterval / 60) % 60
+        let seconds = diffTimeInterval % 60
+        
+        timer.runTime = diffTimeInterval
         
         return (hours < 10 ? "0" : "") + String(hours) + ":" + (minutes < 10 ? "0" : "") + String(minutes) + ":" + (seconds < 10 ? "0" : "") + String(seconds)
     }
