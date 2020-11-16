@@ -19,6 +19,10 @@ class TimerTableViewCell: UITableViewCell {
             titleLabel.text = timer!.title
             timeLabel.text = displayTime(of: timer!)
             statusLabel.text = "Tap to start/pause"
+            
+            if timer!.isRunning == false {
+                timer!.targetDate = Date(timeIntervalSinceNow: Double(timer!.runTime))
+            }
         }
     }
     
@@ -46,9 +50,14 @@ class TimerTableViewCell: UITableViewCell {
     
     // return formatted time string
     func displayTime(of timer: MyTimer) -> String {
+        
         let timer = timer
         
-        let target = timer.targetDate + 1.0
+        if timer.isRunning == false {
+            timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
+        }
+        
+        let target = timer.targetDate + 1
         let now = Date()
         let diffTimeInterval = Int(target.timeIntervalSinceReferenceDate - now.timeIntervalSinceReferenceDate)
         

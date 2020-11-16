@@ -39,7 +39,6 @@ class TimerListTableViewController: UITableViewController {
                 timers.remove(at: index)
                 timers.insert(timer, at: index)
             } else {
-                
                 // to pause or not to pause
 //                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
 //                    timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
@@ -213,7 +212,7 @@ class TimerListTableViewController: UITableViewController {
             let cell = tableView.cellForRow(at: indexPath) as! TimerTableViewCell
             
             timer.runTime = timer.initialTime
-            timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
+            timer.targetDate = Date(timeIntervalSinceNow: Double(timer.initialTime))
             cell.timeLabel.text = cell.displayTime(of: timer)
             cell.statusLabel.text = ""
             
