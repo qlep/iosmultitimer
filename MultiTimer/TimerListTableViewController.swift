@@ -113,16 +113,17 @@ class TimerListTableViewController: UITableViewController {
         content.title = "\(title)"
         content.body = "\(title) is done"
         content.sound = UNNotificationSound.default
-        content.badge = NSNumber(value: Int(badgeCount + 1))
+        
+        badgeCount += 1
+        content.badge = NSNumber(value: badgeCount)
         
         // the trigger is date in future
         let triggerDate = date
         let triggerDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: triggerDate)
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: false)
-        
-//        let identifier = UUID().uuidString
         let request = UNNotificationRequest(identifier: String(id), content: content, trigger: trigger)
+        print("*** added \(title) with badge count: \(badgeCount)")
         
         notificationCenter.add(request) {
             error in

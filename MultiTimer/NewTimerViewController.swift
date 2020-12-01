@@ -70,11 +70,15 @@ class NewTimerViewController: UIViewController {
             controller.timer = editedTimer
             controller.index = index
             
+            controller.scheduleNotification(id: index, title: editedTimer.title, date: editedTimer.targetDate, sound: true)
+            
         } else {
             let newTimer = MyTimer(title: titleString, hours: selectedHours, minutes: selectedMinutes, seconds: selectedSeconds)
             
             controller.timer = newTimer            
             controller.index = -1
+            
+            controller.scheduleNotification(id: controller.timers.count, title: newTimer.title, date: newTimer.targetDate, sound: true)
         }
     }
 }
