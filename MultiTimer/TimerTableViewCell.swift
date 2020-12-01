@@ -37,7 +37,7 @@ class TimerTableViewCell: UITableViewCell {
             } else {
                 timer.isRunning = false
                 timer.runTime = timer.initialTime
-                timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime ))
+                timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
                 
                 statusLabel.text = "Done"
             }
@@ -61,7 +61,6 @@ class TimerTableViewCell: UITableViewCell {
         
         // wtf?..
         let target = timer.targetDate + 1
-        print(">>> \(timer.title) target set to display plus one")
         
         let now = Date()
         let diffTimeInterval = Int(target.timeIntervalSinceReferenceDate - now.timeIntervalSinceReferenceDate)

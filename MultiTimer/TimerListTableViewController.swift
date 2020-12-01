@@ -15,8 +15,10 @@ class TimerListTableViewController: UITableViewController {
     var ticker: Timer?
     var timer: MyTimer?
     var index: Int = -1
+    var badgeCount: Int = 0
     
-    let notificationCenter = UNUserNotificationCenter.current()
+    private let notificationCenter = UNUserNotificationCenter.current()
+    private var pendingNotificationRequests: [UNNotificationRequest] = []
     
     @IBOutlet weak var newTimerButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
@@ -63,14 +65,11 @@ class TimerListTableViewController: UITableViewController {
             guard let self = self else {return}
             
             self.notificationCenter.delegate = self
-            
-            if granted {
-                print("*** GRANTED!!!")
-            }
         })
         
         loadTimers()
         checkNotificationSettings()
+        refreshNotificationList()
         
     }
     
@@ -97,27 +96,39 @@ class TimerListTableViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    func scheduleNotification(title: String, sound: Bool, badge: Int) {
+    func refreshNotificationList() {
+        notificationCenter.getPendingNotificationRequests (completionHandler: {
+            [weak self] requests in
+            
+            guard let self = self else {return}
+            
+            self.pendingNotificationRequests = requests
+        })
+    }
+    
+    // MARK: - Scheduling notifications
+    func scheduleNotification(id: Int, title: String, date: Date, sound: Bool) {
         
         let content = UNMutableNotificationContent()
         content.title = "\(title)"
         content.body = "\(title) is done"
         content.sound = UNNotificationSound.default
-        content.badge = 1
+        content.badge = NSNumber(value: Int(badgeCount + 1))
         
-        // the trigger is now
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.1, repeats: false)
-        let identifier = UUID().uuidString
+        // the trigger is date in future
+        let triggerDate = date
+        let triggerDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: triggerDate)
         
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: false)
+        
+//        let identifier = UUID().uuidString
+        let request = UNNotificationRequest(identifier: String(id), content: content, trigger: trigger)
         
         notificationCenter.add(request) {
             error in
             
             if let error = error {
                 print("*** FAILED to schedule notification. \(error.localizedDescription)")
-            } else {
-                print("*** DONE scheduling notification for \(title)")
             }
         }
     }
@@ -147,17 +158,12 @@ class TimerListTableViewController: UITableViewController {
                     cell.setPause()
                 }
             }
-            
-            if timer.targetDate < Date() {
-                print("*** the date is now")
-                scheduleNotification(title: timer.title, sound: true, badge: 1)
-            }
         }
         
-        // array of running timers, trailing closure
+        // set array of running timers, trailing closure
         let runningTimers = timers.filter{$0.isRunning}
         
-        // invalidate ticker if no timers running
+        // invalidate ticker if no timers in array running
         if runningTimers.count == 0 {
             stopTimer()
         }
@@ -172,7 +178,7 @@ class TimerListTableViewController: UITableViewController {
     }
     
     // MARK: - TableView data source
-    // theres only one section in table
+    // only one section in table
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -229,6 +235,16 @@ class TimerListTableViewController: UITableViewController {
         timer.isRunning.toggle()
         timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
         
+        if timer.isRunning {
+            scheduleNotification(id: indexPath.row, title: timer.title, date: timer.targetDate, sound: true)
+        } else {
+            // must remove notification for paused timer
+            guard !pendingNotificationRequests.isEmpty else {return}
+            
+            notificationCenter.removePendingNotificationRequests(withIdentifiers: [String(indexPath.row)])
+        }
+        
+        refreshNotificationList()
         saveTimers()
         startTimer()
     }
@@ -325,10 +341,9 @@ extension TimerListTableViewController {
     }
 }
 
+// MARK: - UserNotificationCenterDelegate
 extension TimerListTableViewController: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-
-      print("*** OK, Will present")
 
       completionHandler([.alert, .sound, .badge])
     }
