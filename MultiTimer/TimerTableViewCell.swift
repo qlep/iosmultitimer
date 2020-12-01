@@ -20,9 +20,11 @@ class TimerTableViewCell: UITableViewCell {
             timeLabel.text = displayTime(of: timer!)
             statusLabel.text = "Tap to start/pause"
             
-            if timer!.isRunning == false {
-                timer!.targetDate = Date(timeIntervalSinceNow: Double(timer!.runTime))
-            }
+            // necessary?..
+//            if timer!.isRunning == false {
+//                timer!.targetDate = Date(timeIntervalSinceNow: Double(timer!.runTime))
+//                print("*** \(timer!.title) timer did set in cell")
+//            }
         }
     }
     
@@ -57,7 +59,10 @@ class TimerTableViewCell: UITableViewCell {
             timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
         }
         
+        // wtf?..
         let target = timer.targetDate + 1
+        print(">>> \(timer.title) target set to display plus one")
+        
         let now = Date()
         let diffTimeInterval = Int(target.timeIntervalSinceReferenceDate - now.timeIntervalSinceReferenceDate)
         

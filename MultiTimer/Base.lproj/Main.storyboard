@@ -1,67 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="8pY-hU-q83">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="8pY-hU-q83">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--My Timers-->
+        <!--⏱-->
         <scene sceneID="1Wf-qb-tYd">
             <objects>
                 <tableViewController id="GGK-ZF-HEh" customClass="TimerListTableViewController" customModule="MultiTimer" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="EJJ-hi-oeR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" systemColor="systemGray6Color"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TimerCell" rowHeight="65" id="cTc-31-vSa" customClass="TimerTableViewCell" customModule="MultiTimer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="65"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TimerCell" rowHeight="95" id="cTc-31-vSa" customClass="TimerTableViewCell" customModule="MultiTimer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="95"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cTc-31-vSa" id="Ob0-EZ-LWf">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="95"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Titile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hKO-b4-Qcw" userLabel="Titile Label">
-                                            <rect key="frame" x="15" y="0.0" width="249.5" height="44"/>
-                                            <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="25"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZ6-eW-MzV" userLabel="Time Label">
-                                            <rect key="frame" x="269.5" y="11" width="79.5" height="43"/>
-                                            <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <rect key="frame" x="10" y="5" width="360" height="41"/>
+                                            <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="41" id="vkI-ng-klP"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZ6-eW-MzV" userLabel="Time Label">
+                                            <rect key="frame" x="243" y="51" width="116" height="40"/>
+                                            <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="45"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paused" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dOS-ib-yYe" userLabel="Status Label">
-                                            <rect key="frame" x="15" y="44" width="249.5" height="21"/>
+                                            <rect key="frame" x="10" y="51" width="228" height="20"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="21" id="ir5-5Q-rVD"/>
+                                                <constraint firstAttribute="height" constant="20" id="ir5-5Q-rVD"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" weight="thin" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                            <color key="textColor" systemColor="scrollViewTexturedBackgroundColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" systemColor="systemGray6Color"/>
                                     <constraints>
-                                        <constraint firstItem="hKO-b4-Qcw" firstAttribute="top" secondItem="Ob0-EZ-LWf" secondAttribute="top" id="9NP-YS-FWJ"/>
-                                        <constraint firstItem="hKO-b4-Qcw" firstAttribute="leading" secondItem="Ob0-EZ-LWf" secondAttribute="leading" constant="15" id="Jey-pI-B08"/>
-                                        <constraint firstItem="dOS-ib-yYe" firstAttribute="top" secondItem="hKO-b4-Qcw" secondAttribute="bottom" id="Y0s-Kx-rwr"/>
-                                        <constraint firstItem="dOS-ib-yYe" firstAttribute="leading" secondItem="Ob0-EZ-LWf" secondAttribute="leading" constant="15" id="YLs-nf-Wwy"/>
+                                        <constraint firstItem="hKO-b4-Qcw" firstAttribute="top" secondItem="Ob0-EZ-LWf" secondAttribute="top" constant="5" id="9NP-YS-FWJ"/>
+                                        <constraint firstItem="dOS-ib-yYe" firstAttribute="top" secondItem="hKO-b4-Qcw" secondAttribute="bottom" constant="5" id="Cou-m7-srw"/>
+                                        <constraint firstItem="hKO-b4-Qcw" firstAttribute="leading" secondItem="Ob0-EZ-LWf" secondAttribute="leading" constant="10" id="Jey-pI-B08"/>
+                                        <constraint firstAttribute="trailing" secondItem="hKO-b4-Qcw" secondAttribute="trailing" constant="5" id="MOJ-3v-Aoa"/>
+                                        <constraint firstItem="OZ6-eW-MzV" firstAttribute="top" secondItem="hKO-b4-Qcw" secondAttribute="bottom" constant="5" id="SFu-G5-bOg"/>
+                                        <constraint firstItem="dOS-ib-yYe" firstAttribute="leading" secondItem="Ob0-EZ-LWf" secondAttribute="leading" constant="10" id="YLs-nf-Wwy"/>
                                         <constraint firstItem="OZ6-eW-MzV" firstAttribute="leading" secondItem="dOS-ib-yYe" secondAttribute="trailing" constant="5" id="bXl-0z-0hS"/>
-                                        <constraint firstAttribute="bottom" secondItem="dOS-ib-yYe" secondAttribute="bottom" id="mLD-0s-j5L"/>
-                                        <constraint firstItem="OZ6-eW-MzV" firstAttribute="leading" secondItem="hKO-b4-Qcw" secondAttribute="trailing" constant="5" id="mSu-Xa-20i"/>
-                                        <constraint firstItem="OZ6-eW-MzV" firstAttribute="top" secondItem="Ob0-EZ-LWf" secondAttribute="topMargin" id="rVQ-Ev-MAM"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="OZ6-eW-MzV" secondAttribute="bottom" id="rfc-2s-jXI"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="OZ6-eW-MzV" secondAttribute="trailing" constant="10" id="vLy-PI-hYA"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="OZ6-eW-MzV" secondAttribute="bottom" constant="-7" id="rfc-2s-jXI"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="OZ6-eW-MzV" secondAttribute="trailing" id="vLy-PI-hYA"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="systemGray6Color"/>
                                 <connections>
                                     <outlet property="statusLabel" destination="dOS-ib-yYe" id="mDq-EF-6LV"/>
                                     <outlet property="timeLabel" destination="OZ6-eW-MzV" id="h7v-O4-dl6"/>
@@ -74,7 +78,7 @@
                             <outlet property="delegate" destination="GGK-ZF-HEh" id="gMA-QY-dsA"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="My Timers" id="79S-Zc-lAc">
+                    <navigationItem key="navigationItem" title="⏱" id="79S-Zc-lAc">
                         <barButtonItem key="leftBarButtonItem" title="New Timer" image="plus" catalog="system" id="dCt-pV-4Wv">
                             <connections>
                                 <segue destination="lsx-PG-vLh" kind="popoverPresentation" identifier="NewTimer" popoverAnchorBarButtonItem="dCt-pV-4Wv" id="w4I-oW-1eE">
@@ -82,7 +86,7 @@
                                 </segue>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="86O-fx-jLt">
+                        <barButtonItem key="rightBarButtonItem" title="Edit" image="list.bullet" catalog="system" id="86O-fx-jLt">
                             <connections>
                                 <action selector="editTimers" destination="GGK-ZF-HEh" id="VOv-dX-5Nc"/>
                             </connections>
@@ -95,7 +99,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kxn-4H-ePg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1549.5999999999999" y="115.59220389805098"/>
+            <point key="canvasLocation" x="1524" y="116"/>
         </scene>
         <!--New Timer View Controller-->
         <scene sceneID="udh-Qp-GUh">
@@ -107,48 +111,50 @@
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Der Neu Timer Title" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GDn-Kd-lr7">
                                 <rect key="frame" x="15" y="96" width="345" height="39.5"/>
-                                <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="systemGray6Color"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="25"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Usy-fD-ac4">
                                 <rect key="frame" x="0.0" y="165.5" width="375" height="216"/>
-                                <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="systemGray6Color"/>
                                 <connections>
                                     <outlet property="dataSource" destination="lsx-PG-vLh" id="024-qL-9Qm"/>
                                     <outlet property="delegate" destination="lsx-PG-vLh" id="kHd-03-tVr"/>
                                 </connections>
                             </pickerView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9jg-Lv-HRr">
-                                <rect key="frame" x="157.5" y="411.5" width="60" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="START">
-                                    <color key="titleColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <color key="titleShadowColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yeh-UN-w04">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                <items>
+                                    <navigationItem title="⌚︎" id="uom-Wm-B0q"/>
+                                </items>
+                            </navigationBar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9jg-Lv-HRr">
+                                <rect key="frame" x="170.5" y="411.5" width="34" height="60"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <state key="normal" title="➤">
+                                    <color key="titleColor" systemColor="systemGreenColor"/>
+                                    <color key="titleShadowColor" systemColor="systemIndigoColor"/>
                                 </state>
                                 <state key="disabled">
-                                    <color key="titleColor" systemColor="systemGray2Color" red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" systemColor="systemGray2Color"/>
                                 </state>
                                 <state key="highlighted">
-                                    <color key="titleColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" systemColor="systemPurpleColor"/>
                                 </state>
                                 <connections>
                                     <segue destination="NXY-AQ-oSv" kind="unwind" identifier="StartNewTimer" unwindAction="userDidStartNewTimer:" id="cFj-MF-Zn7"/>
                                 </connections>
                             </button>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yeh-UN-w04">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
-                                <items>
-                                    <navigationItem title="New Timer" id="uom-Wm-B0q"/>
-                                </items>
-                            </navigationBar>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="F7j-JK-ava"/>
+                        <color key="backgroundColor" systemColor="systemGray6Color"/>
                         <constraints>
                             <constraint firstItem="GDn-Kd-lr7" firstAttribute="top" secondItem="yeh-UN-w04" secondAttribute="bottom" constant="40" id="1So-hy-ETo"/>
                             <constraint firstItem="yeh-UN-w04" firstAttribute="leading" secondItem="F7j-JK-ava" secondAttribute="leading" id="1kT-md-o4d"/>
                             <constraint firstItem="GDn-Kd-lr7" firstAttribute="leading" secondItem="F7j-JK-ava" secondAttribute="leading" constant="15" id="GKr-0Y-CKc"/>
                             <constraint firstItem="GDn-Kd-lr7" firstAttribute="centerX" secondItem="QRR-rQ-zSQ" secondAttribute="centerX" id="HLp-9F-Bky"/>
+                            <constraint firstItem="9jg-Lv-HRr" firstAttribute="centerX" secondItem="QRR-rQ-zSQ" secondAttribute="centerX" id="Kk2-HR-AjN"/>
                             <constraint firstItem="Usy-fD-ac4" firstAttribute="centerX" secondItem="GDn-Kd-lr7" secondAttribute="centerX" id="RVF-kU-ieW"/>
                             <constraint firstItem="9jg-Lv-HRr" firstAttribute="centerX" secondItem="QRR-rQ-zSQ" secondAttribute="centerX" id="UeD-tW-oOm"/>
                             <constraint firstItem="yeh-UN-w04" firstAttribute="top" secondItem="F7j-JK-ava" secondAttribute="top" id="VtB-e8-yP4"/>
@@ -157,7 +163,6 @@
                             <constraint firstItem="Usy-fD-ac4" firstAttribute="top" secondItem="GDn-Kd-lr7" secondAttribute="bottom" constant="30" id="rmL-8q-ula"/>
                             <constraint firstItem="Usy-fD-ac4" firstAttribute="leading" secondItem="F7j-JK-ava" secondAttribute="leading" id="z0j-dK-ceK"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="F7j-JK-ava"/>
                     </view>
                     <connections>
                         <outlet property="navigationBar" destination="uom-Wm-B0q" id="cTs-jw-yNK"/>
@@ -169,7 +174,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="89a-3d-jaw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="NXY-AQ-oSv" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2274" y="116"/>
+            <point key="canvasLocation" x="2196" y="115.59220389805098"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="aDi-vG-5tk">
@@ -191,6 +196,25 @@
         </scene>
     </scenes>
     <resources>
+        <image name="list.bullet" catalog="system" width="128" height="88"/>
         <image name="plus" catalog="system" width="128" height="113"/>
+        <systemColor name="scrollViewTexturedBackgroundColor">
+            <color red="0.43529411764705878" green="0.44313725490196082" blue="0.47450980392156861" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGray2Color">
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemIndigoColor">
+            <color red="0.34509803921568627" green="0.33725490196078434" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemPurpleColor">
+            <color red="0.68627450980392157" green="0.32156862745098042" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>
