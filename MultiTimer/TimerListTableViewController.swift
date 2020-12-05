@@ -10,6 +10,7 @@ import UIKit
 import UserNotifications
 
 class TimerListTableViewController: UITableViewController {
+    
     // MARK: - Properties
     var timers: [MyTimer] = []
     var ticker: Timer?
@@ -33,7 +34,7 @@ class TimerListTableViewController: UITableViewController {
         }
     }
     
-    // when user taps start button in NewTimerViewController, unwind here
+    // NewTimerViewController segue unwinds here
     @IBAction func userDidStartNewTimer(_ segue: UIStoryboardSegue) {
         
         if let timer = timer {
@@ -41,7 +42,7 @@ class TimerListTableViewController: UITableViewController {
                 timers.remove(at: index)
                 timers.insert(timer, at: index)
             } else {
-                // to pause or not to pause
+                // asyncafter(deadline:) doesnt seem to be of (any) use here
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
                 }
@@ -50,6 +51,9 @@ class TimerListTableViewController: UITableViewController {
             }
             
             timer.isRunning = true
+            
+            scheduleNotification(id: index, title: timer.title, date: timer.targetDate, sound: true)
+            
             tableView.reloadData()
             saveTimers()
             startTimer()
@@ -62,7 +66,9 @@ class TimerListTableViewController: UITableViewController {
         // request permission to send notification
         notificationCenter.requestAuthorization(options: [.alert, .sound, .badge], completionHandler: {
             [weak self] (granted, error) in
+            
             guard let self = self else {return}
+            guard granted else {return}
             
             self.notificationCenter.delegate = self
         })
@@ -75,11 +81,11 @@ class TimerListTableViewController: UITableViewController {
     
     // MARK: - Helper Methods
     func checkNotificationSettings() {
-        // check if settings are allowed and act accordingly
+        // check if notifications allowed, act accordingly
         notificationCenter.getNotificationSettings {
             settings in
             if settings.authorizationStatus != .authorized {
-                // alert to allow settings
+                // alert to enable settings
                 DispatchQueue.main.async {
                     self.enableNotificationsAlert()
                 }
@@ -87,6 +93,7 @@ class TimerListTableViewController: UITableViewController {
         }
     }
     
+    // alert use to enable notifications
     func enableNotificationsAlert() {
         let alert = UIAlertController(title: "Enable notifications", message: "Please enable notifications in settings to be notified when your timer is done.", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -96,6 +103,7 @@ class TimerListTableViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    // keep pending notification list fresh
     func refreshNotificationList() {
         notificationCenter.getPendingNotificationRequests (completionHandler: {
             [weak self] requests in
@@ -111,11 +119,12 @@ class TimerListTableViewController: UITableViewController {
         
         let content = UNMutableNotificationContent()
         content.title = "\(title)"
-        content.body = "\(title) is done"
+        content.body = "👍"
         content.sound = UNNotificationSound.default
+        content.categoryIdentifier = "DoneOrNone"
+        content.badge = NSNumber(value: badgeCount)
         
         badgeCount += 1
-        content.badge = NSNumber(value: badgeCount)
         
         // the trigger is date in future
         let triggerDate = date
@@ -243,6 +252,8 @@ class TimerListTableViewController: UITableViewController {
             guard !pendingNotificationRequests.isEmpty else {return}
             
             notificationCenter.removePendingNotificationRequests(withIdentifiers: [String(indexPath.row)])
+            
+            badgeCount -= 1
         }
         
         refreshNotificationList()
@@ -342,10 +353,3 @@ extension TimerListTableViewController {
     }
 }
 
-// MARK: - UserNotificationCenterDelegate
-extension TimerListTableViewController: UNUserNotificationCenterDelegate {
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-
-      completionHandler([.alert, .sound, .badge])
-    }
-}

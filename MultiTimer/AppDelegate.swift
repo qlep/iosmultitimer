@@ -9,22 +9,27 @@
 import UIKit
 import UserNotifications
 
+private let categoryIdentifier = "DoneOrNone"
+
+private enum ActionIdentifier: String {
+    case done, again
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    let notificationCenter = UNUserNotificationCenter.current()
+    // register custom actions, use action category identifier when schedule notification
+    private func registerCustomActions() {
+        let done = UNNotificationAction(identifier: ActionIdentifier.done.rawValue, title: "Done")
+        let again = UNNotificationAction(identifier: ActionIdentifier.again.rawValue, title: "Again")
+        let category = UNNotificationCategory(identifier: categoryIdentifier, actions: [done, again], intentIdentifiers: [])
+        
+        UNUserNotificationCenter.current().setNotificationCategories([category])
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
-        let options: UNAuthorizationOptions = [.alert, .sound, .badge]
-        
-        notificationCenter.requestAuthorization(options: options) {
-            (didAllow, error) in
-            if !didAllow {
-                print("User has declined notifications.")
-            }
-        }
+        registerCustomActions()
         
         return true
     }
@@ -42,7 +47,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
+}
 
-
+// MARK: - UserNotificationCenterDelegate
+extension TimerListTableViewController: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        // use .banner to present banner in foreground
+        completionHandler([.list, .banner, .sound, .badge])
+    }
+    
+    // when user taps notification banner
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        defer { completionHandler() }
+        
+        let identity = response.notification.request.content.categoryIdentifier
+        guard identity == categoryIdentifier, let action = ActionIdentifier(rawValue: response.actionIdentifier) else {return}
+        
+        print("You pressed \(response.actionIdentifier)")
+    }
 }
 
