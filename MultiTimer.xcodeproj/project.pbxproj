@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F7107D7A250D17A100A4A1AB /* TimerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7107D79250D17A100A4A1AB /* TimerTableViewCell.swift */; };
 		F7107D7C250E423100A4A1AB /* NewTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7107D7B250E423100A4A1AB /* NewTimerViewController.swift */; };
+		F76339D62580F57000FEC9F7 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76339D52580F57000FEC9F7 /* Notification.swift */; };
 		F7807E9A25079F21003E64E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7807E9925079F21003E64E0 /* AppDelegate.swift */; };
 		F7807E9C25079F21003E64E0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7807E9B25079F21003E64E0 /* SceneDelegate.swift */; };
 		F7807E9E25079F21003E64E0 /* TimerListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7807E9D25079F21003E64E0 /* TimerListTableViewController.swift */; };
@@ -21,6 +22,7 @@
 /* Begin PBXFileReference section */
 		F7107D79250D17A100A4A1AB /* TimerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTableViewCell.swift; sourceTree = "<group>"; };
 		F7107D7B250E423100A4A1AB /* NewTimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTimerViewController.swift; sourceTree = "<group>"; };
+		F76339D52580F57000FEC9F7 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		F7807E9625079F21003E64E0 /* MultiTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7807E9925079F21003E64E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F7807E9B25079F21003E64E0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				F7807E9925079F21003E64E0 /* AppDelegate.swift */,
+				F76339D52580F57000FEC9F7 /* Notification.swift */,
 				F7807E9B25079F21003E64E0 /* SceneDelegate.swift */,
 				F7807E9D25079F21003E64E0 /* TimerListTableViewController.swift */,
 				F7107D79250D17A100A4A1AB /* TimerTableViewCell.swift */,
@@ -150,6 +153,7 @@
 				F7807E9E25079F21003E64E0 /* TimerListTableViewController.swift in Sources */,
 				F7807E9A25079F21003E64E0 /* AppDelegate.swift in Sources */,
 				F7107D7A250D17A100A4A1AB /* TimerTableViewCell.swift in Sources */,
+				F76339D62580F57000FEC9F7 /* Notification.swift in Sources */,
 				F7107D7C250E423100A4A1AB /* NewTimerViewController.swift in Sources */,
 				F7807E9C25079F21003E64E0 /* SceneDelegate.swift in Sources */,
 				F7807EAE2507A6E4003E64E0 /* MyTimer.swift in Sources */,

@@ -60,9 +60,12 @@ class TimerListTableViewController: UITableViewController {
         }
     }
     
+    // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        badgeCount = 0
+        print("*** bhadge count on load: \(badgeCount)")
+            
         // request permission to send notification
         notificationCenter.requestAuthorization(options: [.alert, .sound, .badge], completionHandler: {
             [weak self] (granted, error) in
@@ -72,6 +75,34 @@ class TimerListTableViewController: UITableViewController {
             
             self.notificationCenter.delegate = self
         })
+        
+        // when done tapped
+        Notification.Name.doneButton.onPost { [weak self] shit in
+            let timerInt = Int(truncating: shit.userInfo!["timerId"] as! NSNumber)
+            self!.badgeCount -= 1
+            
+            if self!.badgeCount < 0 {
+                self!.badgeCount = 0
+            }
+            
+            print("*** done clicked \(timerInt), badge count: \(self!.badgeCount)")
+        }
+        
+        // when again tapped
+        Notification.Name.againButton.onPost { [weak self] shit in
+            let timerInt = Int(truncating: shit.userInfo!["timerId"] as! NSNumber)
+            let timer = self!.timers[timerInt]
+            
+            DispatchQueue.main.async {
+                timer.isRunning = true
+                timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
+                self!.scheduleNotification(id: timerInt, title: timer.title, date: timer.targetDate, sound: true)
+                self!.startTimer()
+                
+                
+                print("*** timer number \(timerInt) will run again. Target date: \(timer.targetDate) : now \(Date()), \(timer.runTime)")
+            }
+        }
         
         loadTimers()
         checkNotificationSettings()
@@ -122,9 +153,10 @@ class TimerListTableViewController: UITableViewController {
         content.body = "👍"
         content.sound = UNNotificationSound.default
         content.categoryIdentifier = "DoneOrNone"
-        content.badge = NSNumber(value: badgeCount)
+        content.userInfo = ["timerId" : id]
         
         badgeCount += 1
+        content.badge = NSNumber(value: badgeCount)
         
         // the trigger is date in future
         let triggerDate = date

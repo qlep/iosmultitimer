@@ -18,7 +18,7 @@ private enum ActionIdentifier: String {
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    // register custom actions, use action category identifier when schedule notification
+    // register custom actions, use action category identifier when scheduling notification
     private func registerCustomActions() {
         let done = UNNotificationAction(identifier: ActionIdentifier.done.rawValue, title: "Done")
         let again = UNNotificationAction(identifier: ActionIdentifier.again.rawValue, title: "Again")
@@ -64,7 +64,14 @@ extension TimerListTableViewController: UNUserNotificationCenterDelegate {
         let identity = response.notification.request.content.categoryIdentifier
         guard identity == categoryIdentifier, let action = ActionIdentifier(rawValue: response.actionIdentifier) else {return}
         
-        print("You pressed \(response.actionIdentifier)")
+        let userInfo = response.notification.request.content.userInfo
+        
+        switch action {
+        case .done:
+            Notification.Name.doneButton.post(userInfo: userInfo)
+        case .again:
+            Notification.Name.againButton.post(userInfo: userInfo)
+        }
     }
 }
 
