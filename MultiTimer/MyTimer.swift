@@ -14,10 +14,15 @@ class MyTimer: Codable {
     var seconds: Int
     var minutes: Int
     var hours: Int
-    let initialTime: Int
-    var runTime: Int
-    var targetDate: Date
-    var isRunning = false
+    let setTime: Int
+    var runningTime: Int
+    var targetDate = Date()
+    
+    var isRunning: Bool {
+        willSet {
+            self.targetDate = Date(timeIntervalSinceNow: Double(self.setTime))
+        }
+    }
     
     // MARK: - Initialization
     init (title: String, hours: Int, minutes: Int, seconds: Int) {
@@ -27,9 +32,20 @@ class MyTimer: Codable {
         self.seconds = seconds
         
         // total running time in seconds
-        self.initialTime = self.seconds + self.minutes * 60 + self.hours * 3600
-        self.runTime = self.initialTime
+        self.setTime = self.seconds + self.minutes * 60 + self.hours * 3600
+        self.runningTime = setTime
+        self.isRunning = false
+    }
+    
+    func countdown() -> Int {
+        let now = Date()
         
-        self.targetDate = Date(timeIntervalSinceNow: Double(self.runTime))
+//        self.runningTime = Int(now.timeIntervalSince(self.targetDate))
+        
+        self.runningTime = Int(self.targetDate.timeIntervalSinceReferenceDate - now.timeIntervalSinceReferenceDate)
+        
+        print(self.runningTime)
+        
+        return self.runningTime
     }
 }

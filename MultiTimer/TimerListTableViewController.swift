@@ -16,7 +16,7 @@ class TimerListTableViewController: UITableViewController {
     var ticker: Timer?
     var timer: MyTimer?
     var index: Int = -1
-    var badgeCount: Int = 0
+    var badgeCount: Int = UIApplication.shared.applicationIconBadgeNumber
     
     private let notificationCenter = UNUserNotificationCenter.current()
     private var pendingNotificationRequests: [UNNotificationRequest] = []
@@ -42,12 +42,8 @@ class TimerListTableViewController: UITableViewController {
                 timers.remove(at: index)
                 timers.insert(timer, at: index)
             } else {
-                // asyncafter(deadline:) doesnt seem to be of (any) use here
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
-                }
-                
                 timers.append(timer)
+                print("--- added \(timer.title): runtime: \(timer.runningTime)")
             }
             
             timer.isRunning = true
@@ -63,9 +59,7 @@ class TimerListTableViewController: UITableViewController {
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        badgeCount = 0
-        print("*** bhadge count on load: \(badgeCount)")
-            
+        
         // request permission to send notification
         notificationCenter.requestAuthorization(options: [.alert, .sound, .badge], completionHandler: {
             [weak self] (granted, error) in
@@ -77,34 +71,33 @@ class TimerListTableViewController: UITableViewController {
         })
         
         // when done tapped
-        Notification.Name.doneButton.onPost { [weak self] shit in
-            let timerInt = Int(truncating: shit.userInfo!["timerId"] as! NSNumber)
+        Notification.Name.doneButton.onPost { [weak self] notification in
             self!.badgeCount -= 1
             
             if self!.badgeCount < 0 {
                 self!.badgeCount = 0
             }
-            
-            print("*** done clicked \(timerInt), badge count: \(self!.badgeCount)")
         }
         
         // when again tapped
-        Notification.Name.againButton.onPost { [weak self] shit in
-            let timerInt = Int(truncating: shit.userInfo!["timerId"] as! NSNumber)
+        Notification.Name.againButton.onPost { [weak self] notification in
+            let timerInt = Int(truncating: notification.userInfo!["timerId"] as! NSNumber)
             let timer = self!.timers[timerInt]
             
             DispatchQueue.main.async {
                 timer.isRunning = true
-                timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
+                timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runningTime))
                 self!.scheduleNotification(id: timerInt, title: timer.title, date: timer.targetDate, sound: true)
                 self!.startTimer()
-                
-                
-                print("*** timer number \(timerInt) will run again. Target date: \(timer.targetDate) : now \(Date()), \(timer.runTime)")
             }
         }
         
         loadTimers()
+        
+        for timer in timers {
+            print(">>> loaded timer \(timer.title): \(timer.runningTime)")
+        }
+        
         checkNotificationSettings()
         refreshNotificationList()
         
@@ -139,7 +132,7 @@ class TimerListTableViewController: UITableViewController {
         notificationCenter.getPendingNotificationRequests (completionHandler: {
             [weak self] requests in
             
-            guard let self = self else {return}
+            guard let self = self else { return }
             
             self.pendingNotificationRequests = requests
         })
@@ -156,6 +149,7 @@ class TimerListTableViewController: UITableViewController {
         content.userInfo = ["timerId" : id]
         
         badgeCount += 1
+        
         content.badge = NSNumber(value: badgeCount)
         
         // the trigger is date in future
@@ -164,6 +158,7 @@ class TimerListTableViewController: UITableViewController {
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: false)
         let request = UNNotificationRequest(identifier: String(id), content: content, trigger: trigger)
+        
         print("*** added \(title) with badge count: \(badgeCount)")
         
         notificationCenter.add(request) {
@@ -195,7 +190,7 @@ class TimerListTableViewController: UITableViewController {
                 
                 if timer.isRunning {
                     cell.updateTime()
-                } else if timer.runTime != timer.initialTime {
+                } else if timer.runningTime != timer.setTime {
                     // when timer paused
                     cell.setPause()
                 }
@@ -239,7 +234,7 @@ class TimerListTableViewController: UITableViewController {
         if let cell = cell as? TimerTableViewCell {
             cell.timer = timer
             
-            if timer.runTime != timer.initialTime {
+            if timer.runningTime != timer.setTime {
                 cell.setPause()
             }
         }
@@ -275,17 +270,16 @@ class TimerListTableViewController: UITableViewController {
         
         // toggle timer state
         timer.isRunning.toggle()
-        timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
+        timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runningTime))
         
         if timer.isRunning {
             scheduleNotification(id: indexPath.row, title: timer.title, date: timer.targetDate, sound: true)
         } else {
             // must remove notification for paused timer
             guard !pendingNotificationRequests.isEmpty else {return}
-            
             notificationCenter.removePendingNotificationRequests(withIdentifiers: [String(indexPath.row)])
-            
             badgeCount -= 1
+            print("*** set PAUSED with badge count: \(badgeCount)")
         }
         
         refreshNotificationList()
@@ -297,15 +291,15 @@ class TimerListTableViewController: UITableViewController {
     // swiping on cell to the right action
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let timer = self.timers[indexPath.row]
-        
         // to reset timer
         let resetAction = UIContextualAction(style: .normal, title: "Reset", handler: {(ac: UIContextualAction, view: UIView, success: (Bool)-> Void) in
             
             let cell = tableView.cellForRow(at: indexPath) as! TimerTableViewCell
             
-            timer.runTime = timer.initialTime
-            timer.targetDate = Date(timeIntervalSinceNow: Double(timer.initialTime))
+            timer.runningTime = timer.setTime
+            timer.targetDate = Date(timeIntervalSinceNow: Double(timer.setTime))
             cell.timeLabel.text = cell.displayTime(of: timer)
+            
             cell.statusLabel.text = ""
             
             self.saveTimers()
@@ -380,7 +374,7 @@ extension TimerListTableViewController {
         }
         
         for timer in timers {
-            timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
+            timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runningTime))
         }
     }
 }

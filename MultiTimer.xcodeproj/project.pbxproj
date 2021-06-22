@@ -65,8 +65,8 @@
 			isa = PBXGroup;
 			children = (
 				F7807E9925079F21003E64E0 /* AppDelegate.swift */,
-				F76339D52580F57000FEC9F7 /* Notification.swift */,
 				F7807E9B25079F21003E64E0 /* SceneDelegate.swift */,
+				F76339D52580F57000FEC9F7 /* Notification.swift */,
 				F7807E9D25079F21003E64E0 /* TimerListTableViewController.swift */,
 				F7107D79250D17A100A4A1AB /* TimerTableViewCell.swift */,
 				F7107D7B250E423100A4A1AB /* NewTimerViewController.swift */,

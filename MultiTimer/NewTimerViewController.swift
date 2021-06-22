@@ -8,19 +8,27 @@
 
 import UIKit
 
-class NewTimerViewController: UIViewController {
-    
-    // MARK: - Properties
-    // pickerView component values in an ordered range
+// pickerView component values in an ordered range
+struct pickerViewComponents {
     var hrs = [Int](0...23)
     var mins = [Int](0...59)
     var secs = [Int](0...59)
+}
+
+struct selectedTime {
+    var hours: Int = 0
+    var minutes: Int = 0
+    var seconds: Int = 1
+}
+
+class NewTimerViewController: UIViewController {
     
-    var selectedHours: Int = 0
-    var selectedMinutes: Int = 0
-    var selectedSeconds: Int = 1
+    // MARK: - Properties
+    
+    
+    var pickerComponents = pickerViewComponents()
+    var timeSelected = selectedTime()
     var titleString = ""
-    
     var timer: MyTimer?
     var index: Int!
     
@@ -56,9 +64,10 @@ class NewTimerViewController: UIViewController {
             pickerView.selectRow(timer.hours, inComponent: 0, animated: true)
             pickerView.selectRow(timer.minutes, inComponent: 1, animated: true)
             pickerView.selectRow(timer.seconds, inComponent: 2, animated: true)
-            selectedHours = timer.hours
-            selectedMinutes = timer.minutes
-            selectedSeconds = timer.seconds
+            
+            timeSelected.hours = timer.hours
+            timeSelected.minutes = timer.minutes
+            timeSelected.seconds = timer.seconds
         }
     }
     
@@ -66,14 +75,16 @@ class NewTimerViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let controller = segue.destination as! TimerListTableViewController
         if var editedTimer = timer {
-            editedTimer = MyTimer(title: titleTextField.text!, hours: selectedHours, minutes: selectedMinutes, seconds: selectedSeconds)
+            editedTimer = MyTimer(title: titleTextField.text!, hours: timeSelected.hours, minutes: timeSelected.minutes, seconds: timeSelected.seconds)
+            
             controller.timer = editedTimer
             controller.index = index
         } else {
-            let newTimer = MyTimer(title: titleString, hours: selectedHours, minutes: selectedMinutes, seconds: selectedSeconds)
+            let newTimer = MyTimer(title: titleString, hours: timeSelected.hours, minutes: timeSelected.minutes, seconds: timeSelected.seconds)
             
             controller.timer = newTimer            
             controller.index = -1
+            print(">>>>>>> new timer title: \(newTimer.title), runtime: \(newTimer.runningTime)")
         }
     }
 }
@@ -87,32 +98,32 @@ extension NewTimerViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int{
         if component == 0 {
-            return hrs.count
+            return pickerComponents.hrs.count
         } else if component == 1 {
-            return mins.count
+            return pickerComponents.mins.count
         } else {
-            return secs.count
+            return pickerComponents.secs.count
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if component == 0 {
-            return String(hrs[row])
+            return String(pickerComponents.hrs[row])
         } else if component == 1 {
-            return String(mins[row])
+            return String(pickerComponents.mins[row])
         } else {
-            return String(secs[row])
+            return String(pickerComponents.secs[row])
         }
     }
     
     // UIPickerView data source
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (component == 0) {
-            selectedHours = hrs[row]
+            timeSelected.hours = pickerComponents.hrs[row]
         }else if (component == 1) {
-            selectedMinutes = mins[row]
+            timeSelected.minutes = pickerComponents.mins[row]
         }else if (component == 2){
-            selectedSeconds = secs[row]
+            timeSelected.seconds = pickerComponents.secs[row]
         }
     }
 }

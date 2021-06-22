@@ -30,6 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         registerCustomActions()
+        application.applicationIconBadgeNumber = 0
         
         return true
     }
@@ -55,6 +56,7 @@ extension TimerListTableViewController: UNUserNotificationCenterDelegate {
         
         // use .banner to present banner in foreground
         completionHandler([.list, .banner, .sound, .badge])
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     // when user taps notification banner

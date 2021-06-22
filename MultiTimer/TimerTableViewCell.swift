@@ -16,28 +16,29 @@ class TimerTableViewCell: UITableViewCell {
     
     var timer: MyTimer? {
         didSet {
-            titleLabel.text = timer!.title
+            timer!.targetDate = Date(timeIntervalSinceNow: Double(timer!.setTime))
             timeLabel.text = displayTime(of: timer!)
+            titleLabel.text = timer!.title
             statusLabel.text = "Tap to start/pause"
             
-            // necessary?..
-//            if timer!.isRunning == false {
-//                timer!.targetDate = Date(timeIntervalSinceNow: Double(timer!.runTime))
-//                print("*** \(timer!.title) timer did set in cell")
-//            }
+            print("passed to cell \(timer!.title): \(timer!.setTime)")
         }
     }
     
+    func setPause() {
+        statusLabel.text = "Paused"
+    }
+    
     func updateTime() {
-        let now = Date()
         if let timer = timer {
-            let diffTimeInterval = Int(timer.targetDate.timeIntervalSinceReferenceDate - now.timeIntervalSinceReferenceDate)
+            let diffTimeInterval = timer.countdown()
+            
             if diffTimeInterval >= 0 {
                 statusLabel.text = ""
             } else {
                 timer.isRunning = false
-                timer.runTime = timer.initialTime
-                timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
+                timer.runningTime = timer.setTime
+                timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runningTime))
                 
                 statusLabel.text = "Done"
             }
@@ -46,31 +47,22 @@ class TimerTableViewCell: UITableViewCell {
         }
     }
     
-    func setPause() {
-        statusLabel.text = "Paused"
-    }
-    
     // return formatted time string
     func displayTime(of timer: MyTimer) -> String {
         
         let timer = timer
         
         if timer.isRunning == false {
-            timer.targetDate = Date(timeIntervalSinceNow: Double(timer.runTime))
+            timer.targetDate = Date(timeIntervalSinceNow: Double(timer.setTime))
         }
         
-        // wtf?..
-        let target = timer.targetDate + 1
-        
-        let now = Date()
-        let diffTimeInterval = Int(target.timeIntervalSinceReferenceDate - now.timeIntervalSinceReferenceDate)
-        
+        let diffTimeInterval = timer.countdown()
         
         let hours = diffTimeInterval / 3600
         let minutes = (diffTimeInterval / 60) % 60
         let seconds = diffTimeInterval % 60
         
-        timer.runTime = diffTimeInterval
+        timer.runningTime = diffTimeInterval
         
         return (hours < 10 ? "0" : "") + String(hours) + ":" + (minutes < 10 ? "0" : "") + String(minutes) + ":" + (seconds < 10 ? "0" : "") + String(seconds)
     }
